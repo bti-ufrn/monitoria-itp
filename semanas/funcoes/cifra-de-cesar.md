@@ -28,19 +28,19 @@ exercício.
 Fonte: https://www.urionlinejudge.com.br/repository/UOJ_1253.html
 
 ## Exemplos de entrada e saída
-| Entrada    | Saída      |
----------------------------
-| 6          | TOPCODER   |
-| VQREQFGT   | TOPCODER   |
-| 2          | AXCHMA     |
-| TOPCODER   | CAMOBAP    |
-| 0          | HELLOWORLD |
-| ZWBGLZ     |            |
-| 25         |            |
-| DBNPCBQ    |            |
-| 1          |            |
-| LIPPSASVPH |            |
-| 4          |            |
+Entrada    | Saída      
+--- | ---
+6          | TOPCODER   
+VQREQFGT   | TOPCODER   
+2          | AXCHMA     
+TOPCODER   | CAMOBAP    
+0          | HELLOWORLD 
+ZWBGLZ     |            
+25         |            
+DBNPCBQ    |            
+1          |            
+LIPPSASVPH |            
+4          |            
 
 ## Interpretação do enunciado:
 Primeiro vamos desmistificar a ambiguidade do enunciado, o que "mover para a esquerda/direita quer dizer?"
