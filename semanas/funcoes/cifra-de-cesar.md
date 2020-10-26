@@ -28,19 +28,19 @@ exercício.
 Fonte: https://www.urionlinejudge.com.br/repository/UOJ_1253.html
 
 ## Exemplos de entrada e saída
-Entrada    | Saída      
+Entrada    | Saída
 --- | ---
-6          | TOPCODER   
-VQREQFGT   | TOPCODER   
-2          | AXCHMA     
-TOPCODER   | CAMOBAP    
-0          | HELLOWORLD 
-ZWBGLZ     |            
-25         |            
-DBNPCBQ    |            
-1          |            
-LIPPSASVPH |            
-4          |            
+6          | TOPCODER
+VQREQFGT   | TOPCODER
+2          | AXCHMA
+TOPCODER   | CAMOBAP
+0          | HELLOWORLD
+ZWBGLZ     |
+25         |
+DBNPCBQ    |
+1          |
+LIPPSASVPH |
+4          |
 
 ## Interpretação do enunciado:
 Primeiro vamos desmistificar a ambiguidade do enunciado, o que "mover para a esquerda/direita quer dizer?"
@@ -278,5 +278,6 @@ Isso não é sempre possível em `C99`, não em loops, somente em outros escopos
 
 Para qualquer dúvidas, questionamentos, ou correções, falar com João Marcos Bezerra no Discord.
 
-### Voltar para a página inicial
-[Clique aqui](README.md).
+---
+#### [Voltar para a página da semana](README.md)
+#### [Voltar para a página inicial](https://github.com/bti-ufrn/monitoria-itp)

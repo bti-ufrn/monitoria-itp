@@ -186,5 +186,6 @@ int main(void) {
 }
 ```
 
-### Voltar para a página inicial
-[Clique aqui](README.md).
+---
+#### [Voltar para a página da semana](README.md)
+#### [Voltar para a página inicial](https://github.com/bti-ufrn/monitoria-itp)

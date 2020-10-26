@@ -138,3 +138,7 @@ void retirarEspacos(char *str, char *dest){
   dest[j+1] = '\0';
 }
 ```
+
+---
+#### [Voltar para a página da semana](README.md)
+#### [Voltar para a página inicial](https://github.com/bti-ufrn/monitoria-itp)

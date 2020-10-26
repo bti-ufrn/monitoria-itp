@@ -253,3 +253,7 @@ Novamente: interpreta-se que `eh_matriz_permutacao` é um boleano que pode mudar
 `linha_1 && linha_2 && linha_3 && linha_4`
 
 Se isso der true, significa que não deu false em nenhuma das etapas, ou seja, deu verdadeiro em todas.
+
+---
+#### [Voltar para a página da semana](README.md)
+#### [Voltar para a página inicial](https://github.com/bti-ufrn/monitoria-itp)
