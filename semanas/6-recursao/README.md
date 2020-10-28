@@ -8,4 +8,4 @@
 - [Fibnot](https://drive.google.com/file/d/162smaRQiZpugSiEtYD-A1on8g3s7dG9l/view?usp=sharing) (Iury Lamonie - vídeo no Drive)
 
 ---
-#### [Voltar para a página inicial](..)
+#### [Voltar para a página inicial](https://github.com/bti-ufrn/monitoria-itp)
