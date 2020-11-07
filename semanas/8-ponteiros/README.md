@@ -1,6 +1,7 @@
 # Monitoria ITP Textos
 ## Soluções em texto:
 - [Dia da Semana](./dia_da_semana.md) (Márcio Tenório)
+- [Caça Palavras](./caca_palavras.md) (João Marcos - INCOMPLETO, somente o código comentado)
 
 ## Soluções em vídeo:
 - [Substring](https://drive.google.com/file/d/1FUHOgMG9mKVUAUifReRxwhwQm0j6GxFo/view?usp=sharing) (Felipe Costa - vídeo no Drive)
