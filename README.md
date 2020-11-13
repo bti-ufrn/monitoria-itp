@@ -7,3 +7,4 @@ Semanas:
 - [6 - Recursão](semanas/6-recursao/README.md)
 - [7 - Matriz](semanas/7-matriz/README.md)
 - [8 - Ponteiros](semanas/8-ponteiros/README.md)
+- [9 - Structs e Enums](semanas/9-structs-e-enums/README.md)
