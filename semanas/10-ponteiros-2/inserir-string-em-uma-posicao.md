@@ -24,9 +24,7 @@ Entrada    | Saída
 muito legal   | muito legalITP
 ITP           |
 11            |
-              |
-\-            | \-
-              |
+_             | _
 muito legal   | ITP nãomuito legal
 ITP não       |
 0             |
