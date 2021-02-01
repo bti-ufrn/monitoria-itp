@@ -28,17 +28,17 @@ Matrix* doubleMatrix(Matrix *mat);
 ```
 
 ## Exemplos de entrada e saída
-Entrada    | Saída
----   | ---
-3 3   | 1 2 3 4 5
-1 3 5 | 2 3 4 5 6
-3 5 7 | 3 4 5 6 7
-5 7 9 | 4 5 6 7 8
-      | 5 6 7 8 9
- |
-2 4     | 1 1 2 2 3 3 4
-1 2 3 4 | 1 1 2 2 3 3 4
-2 3 4 5 | 2 2 3 3 4 4 5
+| Entrada | Saída |
+| ---   | --- |
+| 3 3   | 1 2 3 4 5 |
+| 1 3 5 | 2 3 4 5 6 |
+| 3 5 7 | 3 4 5 6 7 |
+| 5 7 9 | 4 5 6 7 8 |
+|       | 5 6 7 8 9 |
+|        |             |
+| 2 4     | 1 1 2 2 3 3 4 |
+| 1 2 3 4 | 1 1 2 2 3 3 4 |
+| 2 3 4 5 | 2 2 3 3 4 4 5 |
 
 ## Interpretação do enunciado:
 Podemos criar duas matrizes, a de entrada e a de saída, ou já ler os valores de entrada em uma matriz maior.
