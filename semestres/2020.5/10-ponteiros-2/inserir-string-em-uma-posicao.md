@@ -19,15 +19,16 @@ Essa função deverá inserir a string str1 na posição pos da string str2. O r
 Escreva um programa que utilize a função descrita acima. Observe que não é adicionado um espaço em branco após inserir a string.
 
 ## Exemplos de entrada e saída
-Entrada    | Saída
---- | ---
-muito legal   | muito legalITP
-ITP           |
-11            |
-_             | _
-muito legal   | ITP nãomuito legal
-ITP não       |
-0             |
+| Entrada    | Saída |
+| --- | --- |
+| muito legal   | muito legalITP |
+| ITP           | |
+| 11            | |
+|              |  |
+|              |  |
+| muito legal   | ITP nãomuito legal |
+| ITP não       | |
+| 0             | |
 
 ## Interpretação do enunciado:
 A partir da assinatura da função e struct, percebemos que temos de escrever o resultado da operação para `result`.

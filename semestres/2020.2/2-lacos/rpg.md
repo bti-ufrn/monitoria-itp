@@ -13,363 +13,476 @@ Os ataques serão inteiros variando de 1 a 20.  O dragão é um ser feroz, resis
 
 Os jogadores são:
 
-Nome do Jogador | Letra identificadora | Dano | Personagem
---- | --- | --- | ---
-Alyson | A | 10 | The Ice Giant
-Isaac | I | 10 | The Good Carpenter
-Rafaela | R | 6 | The Mathematician
-Wellington | W | 8 | Anonymous
-Salgado | S | 4 | Leaf Hands
-Careca | C | 1 | The ITPist
+| Nome do Jogador | Letra identificadora | Dano | Personagem         |
+| ---             | ---                  | ---  | ---                |
+| Alyson          | A                    | 10   | The Ice Giant      |
+| Isaac           | I                    | 10   | The Good Carpenter |
+| Rafaela         | R                    | 6    | The Mathematician  |
+| Wellington      | W                    | 8    | Anonymous          |
+| Salgado         | S                    | 4    | Leaf Hands         |
+| Careca          | C                    | 1    | The ITPist         |
 
 ## Exemplos de entrada e saída
-Entrada    | Saída
----   | ---
-3 3   | 1 2 3 4 5
-1 3 5 | 2 3 4 5 6
-3 5 7 | 3 4 5 6 7
-5 7 9 | 4 5 6 7 8
-      | 5 6 7 8 9
-_      | _
-2 4     | 1 1 2 2 3 3 4
-1 2 3 4 | 1 1 2 2 3 3 4
-2 3 4 5 | 2 2 3 3 4 4 5
+| Entrada    | Saída                      |
+| :---:      | :---:                      |
+| 10 6       | Rafaela derrotou o dragão! |
+| A 5        | |
+| I 2        | |
+| R 4        | |
+| W 11       | |
+| C 3        | |
+| S 20       | |
+| A 3        | |
+| I 1        | |
+| R 20       | |
+| C 20       | |
+|            | |
+|            | |
+| 10 100     | Casa caiu!                 |
+| A 20       | |
+| I 20       | |
+| R 20       | |
+| C 20       | |
+| S 20       | |
+| A 20       | |
+| W 20       | |
+| A 20       | |
+| C 20       | |
+| R 20       | |
+
 
 ## Interpretação do enunciado:
-Podemos criar duas matrizes, a de entrada e a de saída, ou já ler os valores de entrada em uma matriz maior.
+Temos `N` linhas para analisar, vamos fazer um `for` que roda `N` vezes, para cada uma das vezes, a gente lê o identificador do jogador e o número tirado no dado, caso o número seja menor que 14, não fazemos nada, se for maior que 14, fazemos o ataque.
 
-Vamos optar pela primeira opção para deixar o código mais claro, com duas matrizes primeiro fazemos a leitura e depois nos preocupamos com o preenchimento da outra.
-
-Para o preenchimento da matriz de saída, podemos dividir em 4 etapas.
-1. Copiamos os elementos originais.
-2. Calculamos os valores que possuem dois adjacentes na horizontal.
-3. Calculamos os valores que possuem dois adjacentes na vertical.
-4. Com os valores do passo 2 e 3, calculamos o resto (usando somente adjacência horizontal e vertical).
-
-Usando os números `1`, `2`, `3` e `4` para ilustrar as etapas:
-
-Usando a entrada:
-```
-1 _ 1 _ 1
-_ _ _ _ _
-1 _ 1 _ 1
-_ _ _ _ _
-1 _ 1 _ 1
-```
-
-Adjacentes na horizontal:
-```
-1 2 1 2 1
-_ _ _ _ _
-1 2 1 2 1
-_ _ _ _ _
-1 2 1 2 1
-```
-
-Adjacentes na vertical:
-```
-1 2 1 2 1
-3 _ 3 _ 3
-1 2 1 2 1
-3 _ 3 _ 3
-1 2 1 2 1
-```
-
-Usando `2` e `3`, calcular o que restou:
-```
-1 2 1 2 1
-3 4 3 4 3
-1 2 1 2 1
-3 4 3 4 3
-1 2 1 2 1
-```
-
-OBS¹: Note que é possível trocar a ordem de `2` e `3`, pois ambos valores independem uns dos outros, mas do jeito que fizemos, `4` depende dos dois, então tem de vir no final.
-
-OBS²: Essa é uma das maneiras de resolver que passa os casos de teste, porque os casos de teste foram feitos seguindo esse raciocínio. Mas existem infinitas soluções para reescalar matrizes, que seria similar a reescalar uma imagem (a wikipedia cita [alguns](https://en.wikipedia.org/wiki/Image_scaling)).
+No ataque temos que fazer uma estrutura de decisão baseada no ID para descobrir qual o dano, o dragão foi derrotado caso sua vida seja igual ou menor que 0.
 
 ## Resolução
-Antes de sequer começar a fazer o código, podemos copiar o snippet dado no enunciado:
-```c
-Matrix* doubleMatrix(Matrix *mat);
-```
-
-Se temos que usar a struct `Matrix`, então vamos declara-la, e preparar nosso código com funções para alocar e desalocar.
-```c
-#include <stdio.h>
-#include <stdlib.h>
-
-typedef struct {
-    int height;
-    int width;
-    int** vals;
-} Matrix;
-```
-
-`Matrix` vai possuir a matriz de inteiros e os valores de altura (_height_) e largura (_width_).
-
-Estamos importando `stdlib.h` para usar `malloc()`, e depois `free()`, que será necessário pois precisamos criar matrizes de inteiros com tamanho variável, isso dentro de structs não é possível sem alocação dinâmica.
-
-```c
-Matrix* createMatrix(int height, int width) {
-    Matrix* matrix = malloc(sizeof(Matrix));
-    matrix->height = height;
-    matrix->width = width;
-
-    ...
-}
-```
-
-Primeiros criamos `matrix` com `malloc`, agora temos que criar a matriz em si.
-
-Não é possível criar duas dimensões logo de cara, precisamos ir de uma em uma, primeiro criando todas as linhas, isto é, um array de arrays, já que cada linha representa um array.
-
-Se precisamos criar um array de arrays, precisamos de um array de ponteiros, isso explica porque usamos `int** vals;` na declaração da struct, se tratarmos o `int**` como `int*[]`, temos um array de ponteiros, para cada ponteiro dentro dele, que seria `int*`, podemos tratar como `int[]`, e é nesse ponto que podemos realmente inserir os elementos, no array de inteiros.
-
-Então `int** vals` vai ser uma lista de ponteiros, podemos acessar ponteiros individualmente usando `vals[i]`, e após isso, para cada ponteiro teremos vários elementos, podemos acessar eles com `vals[i][j]`.
-
-```c
-Matrix* createMatrix(int height, int width) {
-    Matrix* matrix = malloc(sizeof(Matrix));
-    matrix->height = height;
-    matrix->width = width;
-
-    matrix->vals = malloc(sizeof(int*) * matrix->height);
-    for (int i = 0; i < matrix->height; ++i) {
-        matrix->vals[i] = malloc(sizeof(int[matrix->width]));
-    }
-    return matrix;
-}
-```
-
-Feito, primeiro alocamos o array de ponteiros (`int**`) com ponteiros (`int*`) e a quantidade de linhas (altura/_height_).
-
-Depois, para cada linha (`int*`) alocamos inteiros (`int`) usando a quantidade de colunas (largura/_width_).
-
-Agora para desalocar, precisamos fazer o procedimento na ordem contrária, de fora para dentro (na analogia de uma torre, se quisermos construir um andar, precisamos construir primeiro a base e ir subindo, se quisermos destruir um andar, precisamos destruir o de cima, e depois ir descendo de 1 em 1).
-
-```c
-void destroyMatrix(Matrix* matrix) {
-    for (int i = 0; i < matrix->height; ++i) {
-        free(matrix->vals[i]);
-    }
-    free(matrix->vals);
-    free(matrix);
-}
-```
-
-Então, liberamos os recursos de cada ponteiro (`int*`) da nossa matriz de inteiros (`int**`), depois liberamos a nossa matriz de inteiros (`int**`), e após isso, a própria struct `Matrix` que contém as 3 variáveis declaradas e também foi alocada dinamicamente.
-
-Agora vamos criar a `main` e preencher os valores de entrada, vamos também mostrar como está o código até então.
+Primeiro com entrada dos dados:
 
 ```c
 #include <stdio.h>
-#include <stdlib.h>
-
-typedef struct {
-    int height;
-    int width;
-    int** vals;
-} Matrix;
-
-Matrix* createMatrix(int height, int width) {
-    Matrix* matrix = malloc(sizeof(Matrix));
-    matrix->height = height;
-    matrix->width = width;
-
-    matrix->vals = malloc(sizeof(int*) * matrix->height);
-    for (int i = 0; i < matrix->height; ++i) {
-        matrix->vals[i] = malloc(sizeof(int[matrix->width]));
-    }
-    return matrix;
-}
-
-void destroyMatrix(Matrix* matrix) {
-    for (int i = 0; i < matrix->height; ++i) {
-        free(matrix->vals[i]);
-    }
-    free(matrix->vals);
-    free(matrix);
-}
-
-// Ainda temos que fazer essa função
-Matrix* doubleMatrix(Matrix* mat);
 
 int main() {
-    int height, width;
-    scanf("%d %d", &height, &width);
+    int numero_de_jogadores, vida_dragao;
+    scanf("%d %d", &numero_de_jogadores, &vida_dragao);
 
-    Matrix* original = createMatrix(height, width);
-    for (int i = 0; i < original->height; ++i) {
-        for (int j = 0; j < original->width; ++j) {
-            scanf("%d", &original->vals[i][j]);
-        }
+    for (int i = 0; i < numero_de_jogadores; ++i) {
+        char jogador;
+        int dado;
+        scanf(" %c %d", &jogador, &dado);
+
+        // checar ataque
     }
-
-    // ...
-    // ...
-
-    destroyMatrix(original);
 }
 ```
 
-Agora é só criar a função seguindo as 4 etapas que eu expliquei na **interpretação do enunciado**:
-```c
-Matrix* doubleMatrix(Matrix* mat) {
-    // Com os tamanhos explicados no enunciado
-    Matrix* new_matrix = createMatrix(mat->height * 2 - 1, mat->width * 2 - 1);
+Note que estou declarando duas variáveis fora do loop, e duas dentro, se não estiver acostumado com esse tipo de declaração não se preocupe, as declaração dentro do `for` **não vai** piorar a performance, o compilador sabe que é só uma variável. É recomendado que você coloque as variáveis com o menor tempo de vida possível, isto é, declarar logo antes do uso, isto deixa o código mais claro pois eu estou sempre unindo declaração com inicialização de valor, então é mais difícil de se perder scrollando para descobrir valor de coisas distantes.
 
-    // Etapa `1`, para cada elemento de `mat` copiar para `new_matrix`
-    //
-    // 1 _ 1 _ 1
-    // _ _ _ _ _
-    // 1 _ 1 _ 1
-    // _ _ _ _ _
-    // 1 _ 1 _ 1
-    for (int i = 0; i < mat->height; ++i) {
-        for (int j = 0; j < mat->width; ++j) {
-            // "Os valores da matriz original vão para para uma posição na nova matriz cujos índices
-            // são o dobro dos índices de suas posições originais"
-            new_matrix->vals[i * 2][j * 2] = mat->vals[i][j];
-        }
-    }
+Lembre-se, se você declara uma variável e não inicializa, o valor dela é INDEFINIDO, pode ser qualquer coisa, dependendo do compilador e da sua máquina. Isto não é um problema pois logo depois da declaração estou inicializando o valor com o `scanf` (não preciso colocar o valor inicial como _0_, por exemplo), sabemos que o `scanf` pode falhar e deixar os valores como estão caso a entrada não venha como especificado, mas estamos assumindo que a entrada (no LoP) é confiável no formato especificado, então não vai dar errado, mesmo que não estejamos VERIFICANDO se deu erado ou não.
 
-    // Etapa `2`, adjacentes de `1` na horizontal
-    //
-    // 1 2 1 2 1
-    // _ _ _ _ _
-    // 1 2 1 2 1
-    // _ _ _ _ _
-    // 1 2 1 2 1
-    for (int i = 0; i < new_matrix->height; i += 2) {
-        for (int j = 1; j < new_matrix->width; j += 2) {
-            new_matrix->vals[i][j] = new_matrix->vals[i][j - 1] + new_matrix->vals[i][j + 1];
-            new_matrix->vals[i][j] /= 2;
-        }
-    }
+Outra coisa, o segundo `scanf` tem um espaço antes do `"%c"`, isto porque o `scanf` que vem antes (seja o do loop depois da primeira iteração, ou o fora do loop para quando `i = 0`) termina com `"...%d"`, este especificador lê enquanto é um número, até antes que não seja, atenção ao "até antes", isso significa que ele vai deixar uma quebra de linha ali solta sim! (lembre-se, cada linha termina com um `'\n'` que é um caractere válido).
 
-    // Etapa `3`, adjacentes de `1` na vertical
-    //
-    // 1 2 1 2 1
-    // 3 _ 3 _ 3
-    // 1 2 1 2 1
-    // 3 _ 3 _ 3
-    // 1 2 1 2 1
-    for (int i = 1; i < new_matrix->height; i += 2) {
-        for (int j = 0; j < new_matrix->width; j += 2) {
-            new_matrix->vals[i][j] = new_matrix->vals[i - 1][j] + new_matrix->vals[i + 1][j];
-            new_matrix->vals[i][j] /= 2;
-        }
-    }
+---
 
-    // Etapa `4`, adjacentes de `2` e `3` na horizontal e vertical, respectivamente
-    //
-    // 1 2 1 2 1
-    // 3 4 3 4 3
-    // 1 2 1 2 1
-    // 3 4 3 4 3
-    // 1 2 1 2 1
-    for (int i = 1; i < new_matrix->height; i += 2) {
-        for (int j = 1; j < new_matrix->width; j += 2) {
-            new_matrix->vals[i][j] = new_matrix->vals[i][j - 1] + new_matrix->vals[i][j + 1];
-            new_matrix->vals[i][j] += new_matrix->vals[i - 1][j] + new_matrix->vals[i + 1][j];
-            new_matrix->vals[i][j] /= 4;
-        }
-    }
-    return new_matrix;
-}
-```
+Agora para a parte do ataque, vamos colocar um `if` que pula a iteração atual do `for` usando o comando `continue`.
 
-Agora precisamos chamar a função na main imprimir o resultado e liberar a memória.
-
-## Código final:
 ```c
 #include <stdio.h>
-#include <stdlib.h>
-
-typedef struct {
-    int height;
-    int width;
-    int** vals;
-} Matrix;
-
-Matrix* createMatrix(int height, int width) {
-    Matrix* matrix = malloc(sizeof(Matrix));
-    matrix->height = height;
-    matrix->width = width;
-
-    matrix->vals = malloc(sizeof(int*) * matrix->height);
-    for (int i = 0; i < matrix->height; ++i) {
-        matrix->vals[i] = malloc(sizeof(int[matrix->width]));
-    }
-    return matrix;
-}
-
-void destroyMatrix(Matrix* matrix) {
-    for (int i = 0; i < matrix->height; ++i) {
-        free(matrix->vals[i]);
-    }
-    free(matrix->vals);
-    free(matrix);
-}
-
-Matrix* doubleMatrix(Matrix* mat) {
-    Matrix* new_matrix = createMatrix(mat->height * 2 - 1, mat->width * 2 - 1);
-
-    // Etapa `1`, para cada elemento de `mat` copiar para `new_matrix`
-    for (int i = 0; i < mat->height; ++i) {
-        for (int j = 0; j < mat->width; ++j) {
-            new_matrix->vals[i * 2][j * 2] = mat->vals[i][j];
-        }
-    }
-
-    // Etapa `2`, adjacentes de `1` na horizontal
-    for (int i = 0; i < new_matrix->height; i += 2) {
-        for (int j = 1; j < new_matrix->width; j += 2) {
-            new_matrix->vals[i][j] = new_matrix->vals[i][j - 1] + new_matrix->vals[i][j + 1];
-            new_matrix->vals[i][j] /= 2;
-        }
-    }
-
-    // Etapa `3`, adjacentes de `1` na vertical
-    for (int i = 1; i < new_matrix->height; i += 2) {
-        for (int j = 0; j < new_matrix->width; j += 2) {
-            new_matrix->vals[i][j] = new_matrix->vals[i - 1][j] + new_matrix->vals[i + 1][j];
-            new_matrix->vals[i][j] /= 2;
-        }
-    }
-
-    // Etapa `4`, adjacentes de `2` e `3` na horizontal e vertical, respectivamente
-    for (int i = 1; i < new_matrix->height; i += 2) {
-        for (int j = 1; j < new_matrix->width; j += 2) {
-            new_matrix->vals[i][j] = new_matrix->vals[i][j - 1] + new_matrix->vals[i][j + 1];
-            new_matrix->vals[i][j] += new_matrix->vals[i - 1][j] + new_matrix->vals[i + 1][j];
-            new_matrix->vals[i][j] /= 4;
-        }
-    }
-    return new_matrix;
-}
 
 int main() {
-    int height, width;
-    scanf("%d %d", &height, &width);
+    int numero_de_jogadores, vida_dragao;
+    scanf("%d %d", &numero_de_jogadores, &vida_dragao);
 
-    Matrix* original = createMatrix(height, width);
-    for (int i = 0; i < original->height; ++i) {
-        for (int j = 0; j < original->width; ++j) {
-            scanf("%d", &original->vals[i][j]);
+    for (int i = 0; i < numero_de_jogadores; ++i) {
+        char jogador;
+        int dado;
+        scanf(" %c %d", &jogador, &dado);
+
+        if (dado <= 14) {
+            // Pula a parte do ataque
+            continue;
         }
-    }
 
-    Matrix* estendido = doubleMatrix(original);
-    for (int i = 0; i < estendido->height; ++i) {
-        for (int j = 0; j < estendido->width; ++j) {
-            printf("%d ", estendido->vals[i][j]);
-        }
-        puts("");
+        // ataque
     }
-
-    destroyMatrix(original);
-    destroyMatrix(estendido);
 }
 ```
+
+Pronto, como está o código acima, para cada linha lida (cada ataque), se o dado for menor que o mínimo aceitável, esta linha será pulada.
+
+Agora para a parte do ataque, vamos usar o bloco `switch-case` (conteúdo da semana anterior), é como um `if` seguido de vários `if else` para verificar a identidade de uma variável, dadas várias opções, assim vamos descobrir quanto de dano será causado.
+
+```c
+#include <stdio.h>
+
+int main() {
+    int numero_de_jogadores, vida_dragao;
+    scanf("%d %d", &numero_de_jogadores, &vida_dragao);
+
+    for (int i = 0; i < numero_de_jogadores; ++i) {
+        char jogador;
+        int dado;
+        scanf(" %c %d", &jogador, &dado);
+
+        if (dado <= 14) {
+            // Pula a parte do ataque
+            continue;
+        }
+
+        int dano = 0;
+        switch (jogador) {
+            case 'A':
+                dano = 10;
+                break;
+
+            case 'I':
+                dano = 10;
+                break;
+
+            case 'R':
+                dano = 6;
+                break;
+
+            case 'W':
+                dano = 8;
+                break;
+
+            case 'S':
+                dano = 4;
+                break;
+
+            case 'C':
+                dano = 1;
+                break;
+
+            default:
+                printf("Erro! Caractere inesperado!\n");
+                return 1;  // Return com código de erro
+        }
+
+        vida -= dano;
+        if (vida <= 0) {
+            // Dragão derrotado
+        }
+    }
+}
+```
+
+Nesse caso, o switch case está atribuindo para a variável `dano`, e depois nós usamos ela.
+
+Note o `return 1;`, nesse caso usamos `1` e não `0`, para indicar que o programa não rodou corretamente, existiu um erro na entrada, pois tivemos um caractere inesperado.
+
+Pronto, o ataque já está sendo causado com o dano correto do jogador que atacou, agora só precisamos imprimir a mensagem correta para quando o dragão for derrotado.
+
+## Código final
+```c
+#include <stdio.h>
+
+int main() {
+    int numero_de_jogadores, vida_dragao;
+    scanf("%d %d", &numero_de_jogadores, &vida_dragao);
+
+    for (int i = 0; i < numero_de_jogadores; ++i) {
+        char jogador;
+        int dado;
+        scanf(" %c %d", &jogador, &dado);
+
+        if (dado <= 14) {
+            // Pula a parte do ataque
+            continue;
+        }
+
+        int dano = 0;
+        switch (jogador) {
+            case 'A':
+                dano = 10;
+                break;
+
+            case 'I':
+                dano = 10;
+                break;
+
+            case 'R':
+                dano = 6;
+                break;
+
+            case 'W':
+                dano = 8;
+                break;
+
+            case 'S':
+                dano = 4;
+                break;
+
+            case 'C':
+                dano = 1;
+                break;
+
+            default:
+                printf("Erro! Caractere inesperado!\n");
+                return 1;  // Return com código de erro
+        }
+
+        vida_dragao -= dano;
+        // Dragão derrotado
+        if (vida_dragao <= 0) {
+            switch (jogador) {
+                case 'A':
+                    printf("Alyson derrotou o dragão!\n");
+                    break;
+
+                case 'I':
+                    printf("Isaac derrotou o dragão!\n");
+                    break;
+
+                case 'R':
+                    printf("Rafaela derrotou o dragão!\n");
+                    break;
+
+                case 'W':
+                    printf("Wellington derrotou o dragão!\n");
+                    break;
+
+                case 'S':
+                    printf("Salgado derrotou o dragão!\n");
+                    break;
+
+                case 'C':
+                    printf("Careca derrotou o dragão!\n");
+                    break;
+            }
+            return 0;  // Finalizar o programa depois de derrotar o dragão
+        }
+    }
+
+    // Se chegou aqui, é porque o dragão não foi derrotado
+    printf("Casa caiu!\n");
+}
+```
+
+Se o loop acabar e não cair no `if` que dá `return 0;`, então a "Casa caiu!", significa que o dragão não morreu.
+
+Essa solução ficou complexa no quesito controle de fluxo do programa, juntamos `continue` no meio, e o `return 0;` no fim de um loop para controlar o fluxo sem ter que colocar vários `if`s e `else`s.
+
+---
+
+Seguem outras soluções para a mesma questão:
+
+# Versão 2
+
+```c
+#include <stdio.h>
+
+int main() {
+    int numero_de_jogadores, vida_dragao;
+    scanf("%d %d", &numero_de_jogadores, &vida_dragao);
+
+    for (int i = 0; i < numero_de_jogadores; ++i) {
+        char jogador;
+        int dado;
+        scanf(" %c %d", &jogador, &dado);
+
+        if (dado <= 14) {
+            // Fazer nada
+        } else {
+            switch (jogador) {
+                case 'A':
+                    vida_dragao -= 10;
+                    if (vida_dragao <= 0) {
+                        printf("Alyson derrotou o dragão!\n");
+                        return 0;
+                    }
+                    break;
+
+                case 'I':
+                    vida_dragao -= 10;
+                    if (vida_dragao <= 0) {
+                        printf("Isaac derrotou o dragão!\n");
+                        return 0;
+                    }
+                    break;
+
+                case 'R':
+                    vida_dragao -= 6;
+                    if (vida_dragao <= 0) {
+                        printf("Rafaela derrotou o dragão!\n");
+                        return 0;
+                    }
+                    break;
+
+                case 'W':
+                    vida_dragao -= 8;
+                    if (vida_dragao <= 0) {
+                        printf("Wellington derrotou o dragão!\n");
+                        return 0;
+                    }
+                    break;
+
+                case 'S':
+                    vida_dragao -= 4;
+                    if (vida_dragao <= 0) {
+                        printf("Salgado derrotou o dragão!\n");
+                        return 0;
+                    }
+                    break;
+
+                case 'C':
+                    vida_dragao -= 1;
+                    if (vida_dragao <= 0) {
+                        printf("Careca derrotou o dragão!\n");
+                        return 0;
+                    }
+                    break;
+
+                default:
+                    printf("Erro! Caractere inesperado!\n");
+                    return 1;  // Return com código de erro
+            }
+        }
+    }
+
+    // Se chegou aqui, é porque o dragão não foi derrotado
+    printf("Casa caiu!\n");
+}
+```
+
+# Versão 3
+```c
+#include <stdbool.h>
+#include <stdio.h>
+
+int main() {
+    int numero_de_jogadores, vida_dragao;
+    scanf("%d %d", &numero_de_jogadores, &vida_dragao);
+
+    bool dragao_vivo = true;
+
+    for (int i = 0; i < numero_de_jogadores; ++i) {
+        char jogador;
+        int dado;
+        scanf(" %c %d", &jogador, &dado);
+
+        if (dado > 14) {
+            if (jogador == 'A') {
+                vida_dragao -= 10;
+                if (vida_dragao <= 0) {
+                    printf("Alyson derrotou o dragão!\n");
+                    dragao_vivo = false;
+                    break;
+                }
+            } else if (jogador == 'I') {
+                vida_dragao -= 10;
+                if (vida_dragao <= 0) {
+                    printf("Isaac derrotou o dragão!\n");
+                    dragao_vivo = false;
+                    break;
+                }
+            } else if (jogador == 'R') {
+                vida_dragao -= 6;
+                if (vida_dragao <= 0) {
+                    printf("Rafaela derrotou o dragão!\n");
+                    dragao_vivo = false;
+                    break;
+                }
+            } else if (jogador == 'W') {
+                vida_dragao -= 8;
+                if (vida_dragao <= 0) {
+                    printf("Wellington derrotou o dragão!\n");
+                    dragao_vivo = false;
+                    break;
+                }
+            } else if (jogador == 'S') {
+                vida_dragao -= 4;
+                if (vida_dragao <= 0) {
+                    printf("Salgado derrotou o dragão!\n");
+                    dragao_vivo = false;
+                    break;
+                }
+            } else if (jogador == 'C') {
+                vida_dragao -= 1;
+                if (vida_dragao <= 0) {
+                    printf("Careca derrotou o dragão!\n");
+                    dragao_vivo = false;
+                    break;
+                }
+            } else {
+                printf("Erro! Caractere inesperado!\n");
+                return 1;  // Return com código de erro
+            }
+        }
+    }
+
+    // Mesmo que "if (dragao_vivo == true)"
+    if (dragao_vivo) {
+        printf("Casa caiu!\n");
+    }
+}
+```
+
+# Última versão
+
+```c
+#include <stdio.h>
+
+int main() {
+    int numero_de_jogadores, vida_dragao;
+    scanf("%d %d", &numero_de_jogadores, &vida_dragao);
+
+    for (int i = 0; i < numero_de_jogadores; ++i) {
+        char jogador;
+        int dado;
+        scanf(" %c %d", &jogador, &dado);
+
+        if (dado <= 14) {
+            continue;
+        }
+        int dano;
+        char* nome;  // Aponta para o nome do último atacante
+
+        if (jogador == 'A') {
+            dano = 10;
+            nome = "Alyson";
+        } else if (jogador == 'I') {
+            dano = 10;
+            nome = "Isaac";
+        } else if (jogador == 'R') {
+            dano = 6;
+            nome = "Rafaela";
+        } else if (jogador == 'W') {
+            dano = 8;
+            nome = "Wellington";
+        } else if (jogador == 'S') {
+            dano = 4;
+            nome = "Salgado";
+        } else if (jogador == 'C') {
+            dano = 1;
+            nome = "Careca";
+        } else {
+            printf("Erro! Caractere inesperado!\n");
+            return 1;
+        }
+
+        vida_dragao -= dano;
+        if (vida_dragao <= 0) {
+            printf("%s derrotou o dragão!\n", nome);
+            return 0;
+        }
+    }
+
+    printf("Casa caiu!\n");
+}
+```
+
+
+
+# Extra
+
+Obs1: C é complicado, C pode ser difícil, mas "por que essa linguagem é tão rudimentar?", a resposta seria que C é uma linguagem de baixo nível enxuta o bastante para você fazer outras ferramentas em cima. Lembre-se que surgiu antes da internet, eram outros problemas e outras limitações.
+
+Obs2: Ambos `printf` e `scanf` retornam um inteiro indicando se aconteceu algum erro, você precisa ler o manual dessas funções para ver o que cada número significaria, estamos ingenuamente usando essas funções para ler e escrever, o mais correto seria criar uma biblioteca de leitura que tem checagens que interrompe quando acontece um erro. Estamos assumindo que a entrada de dados do programa está 100% correta porque os professores estão colocando as atividades, mas você nunca deve esquecer de tratar erros na vida real.
+
+Obs3: Os argumentos do `scanf` SEMPRE deverão ser ponteiros (endereços).
+
+Obs4: `printf` pede valores ao invés de ponteiros, a única exceção é print de strings.
+
+Obs5: `printf` e `scanf` vão pedir um número exato de argumentos na string de formatação, e no resto da função.
