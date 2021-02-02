@@ -486,3 +486,7 @@ Obs3: Os argumentos do `scanf` SEMPRE deverão ser ponteiros (endereços).
 Obs4: `printf` pede valores ao invés de ponteiros, a única exceção é print de strings.
 
 Obs5: `printf` e `scanf` vão pedir um número exato de argumentos na string de formatação, e no resto da função.
+
+---
+#### [Voltar para a página da semana](README.md)
+#### [Voltar para a página inicial](https://github.com/bti-ufrn/monitoria-itp)

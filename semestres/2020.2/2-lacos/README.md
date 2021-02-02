@@ -1,10 +1,11 @@
 # Monitoria ITP Textos
 ## Soluções em texto:
-- [Campos de Altitude](./campos-de-altitude.md) (João Marcos)
+- [RPG](./rpg.md) (João Marcos)
 
 ## Soluções em vídeo:
-- [Desenho Vetorial 2](https://drive.google.com/file/d/1MfV1Q-4NBtRJxLe_l4EaTg4N7OGYbkud/view?usp=sharing) (Márcio Tenório - vídeo no Drive)
-- [Conjunto de Inteiros 2](./conjunto-de-inteiros-2.md) (Felipe Costa - código base + vídeo no Drive)
+- [Touchdown na série histórica!](https://drive.google.com/file/d/1-odeDFFK97Akmy-3KimHB9l6Gu3d16i8/view?usp=sharing) (Felipe Costa - vídeo no Drive)
+- [Decomposição em números primos](https://drive.google.com/file/d/1D0XF0tj_dl6sXIO2W4ibkUtRF02lqUlM/view?usp=sharing) (Iury Lamonie - vídeo no Drive)
+- [Calculadora](https://drive.google.com/file/d/1xdWFXP25jcSFUhJWLEUDpd_hn5afm7yK/view?usp=sharing) (Felipe Costa - vídeo no Drive)
 
 ---
 #### [Voltar para a página inicial](https://github.com/bti-ufrn/monitoria-itp)
