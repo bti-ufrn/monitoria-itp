@@ -256,7 +256,7 @@ int main() {
 
 ## Extras:
 
-Dá para trocar
+Dá para resumir essa expressão
 ```c
 if (number_is_friend) {
     printf("S\n");
@@ -265,7 +265,7 @@ if (number_is_friend) {
 }
 ```
 
-Por isso, usando operador ternário:
+Usando operador ternário (não exagere!)
 ```c
 printf(number_is_friend ? "S\n" : "N\n");
 ```
