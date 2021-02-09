@@ -19,6 +19,7 @@ Além disso seu programa deve utilizar duas funções: uma para somar os divisor
 
 ## Exemplos de entrada e saída
 | Entrada | Saída |
+| :---:   | :---: |
 | 1 2     | S     |
 |         |       |
 | 6 8     | S     |
