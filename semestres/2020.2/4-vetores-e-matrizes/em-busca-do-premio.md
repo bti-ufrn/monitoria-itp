@@ -49,3 +49,7 @@ int main() {
     printf(" ]\n");
 }
 ```
+
+---
+#### [Voltar para a página da semana](README.md)
+#### [Voltar para a página inicial](https://github.com/bti-ufrn/monitoria-itp)
