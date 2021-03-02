@@ -1,4 +1,4 @@
-# Monitoria ITP Textos
+# Soluções
 ## Soluções em texto:
 - [Pitágoras](pitagoras.md)
 - [Número Perfeito](numero-perfeito.md)

@@ -1,4 +1,4 @@
-# Monitoria ITP Textos
+# Soluções
 ## Soluções em texto:
 - [Matriz de Permutação (0/1)](./matriz_de_permutacao.md) (João Marcos)
 

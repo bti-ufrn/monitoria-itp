@@ -1,4 +1,4 @@
-# Monitoria ITP Textos
+# Soluções
 ## Soluções em texto:
 - [Palíndromos](./palindromo.md) (Márcio Tenório)
 

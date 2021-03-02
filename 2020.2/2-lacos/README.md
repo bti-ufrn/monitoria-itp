@@ -1,4 +1,4 @@
-# Monitoria ITP Textos
+# Soluções
 ## Soluções em texto:
 - [RPG](./rpg.md) (João Marcos)
 

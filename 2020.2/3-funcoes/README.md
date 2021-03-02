@@ -1,4 +1,4 @@
-# Monitoria ITP Textos
+# Soluções
 ## Soluções em texto:
 - [Campeonato de Skate](./campeonato-de-skate.md) (João Marcos)
 - [Horários das Rondas](./horarios-das-rondas.md) (João Marcos)
