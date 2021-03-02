@@ -1,31 +1,25 @@
 # Vídeo
-https://youtu.be/ZpIoLN6wP7o
+https://youtu.be/99MRGr2DHv0
 
 # Código
 ```c
 #include <stdbool.h>
 #include <stdio.h>
 
-void imprimir(char matriz[10][10]) {
-    for (int i = 0; i < 10; ++i) {
-        for (int j = 0; j < 10; ++j) {
-            printf("%c", matriz[i][j]);
-        }
-        puts("");
+void ler_e_desenhar_barco(char matriz[10][10], int tamanho) {
+    if (tamanho == 1) {
+        int y, x;
+        scanf("%d %d", &y, &x);
+        matriz[y][x] = '*';
+        return;
     }
-}
 
-void ler_e_desenhar(char matriz[10][10], int tamanho) {
     int coordenadas_y[tamanho];
     int coordenadas_x[tamanho];
     for (int i = 0; i < tamanho; ++i) {
         scanf("%d %d", &coordenadas_y[i], &coordenadas_x[i]);
     }
 
-    if (tamanho == 1) {
-        matriz[coordenadas_y[0]][coordenadas_x[0]] = '*';
-        return;
-    }
     bool esta_na_horizontal = coordenadas_y[0] == coordenadas_y[1];
 
     if (esta_na_horizontal) {
@@ -45,6 +39,15 @@ void ler_e_desenhar(char matriz[10][10], int tamanho) {
     }
 }
 
+void imprimir(char matriz[10][10]) {
+    for (int i = 0; i < 10; ++i) {
+        for (int j = 0; j < 10; ++j) {
+            printf("%c", matriz[i][j]);
+        }
+        puts("");
+    }
+}
+
 int main() {
     char matriz[10][10];
     for (int i = 0; i < 10; ++i) {
@@ -52,10 +55,10 @@ int main() {
             matriz[i][j] = '~';
         }
     }
-    ler_e_desenhar(matriz, 1);
-    ler_e_desenhar(matriz, 2);
-    ler_e_desenhar(matriz, 3);
-    ler_e_desenhar(matriz, 4);
+    ler_e_desenhar_barco(matriz, 1);
+    ler_e_desenhar_barco(matriz, 2);
+    ler_e_desenhar_barco(matriz, 3);
+    ler_e_desenhar_barco(matriz, 4);
     imprimir(matriz);
 }
 ```

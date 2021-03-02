@@ -10,7 +10,7 @@
     - [Código final](./em-busca-do-premio.md)
 - [Ataque dos Clones](https://youtu.be/Z114SUMiOCA) (João Marcos - vídeo no YouTube)
     - [Código final](./ataque-dos-clones.md)
-- [Batalha Naval](https://youtu.be/ZpIoLN6wP7o) (João Marcos - vídeo no YouTube)
+- [Batalha Naval](https://youtu.be/99MRGr2DHv0) (João Marcos - vídeo no YouTube)
     - [Código final](./batalha-naval.md)
 
 
